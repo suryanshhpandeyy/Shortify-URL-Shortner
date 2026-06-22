@@ -42,16 +42,13 @@ This project demonstrates core backend development concepts such as RESTful APIs
 ## Screenshots
 
 ### Signup Page
-![Signup](screenshots/signup.png)
+![Signup](Snaps/signup.png)
 
 ### Login Page
-![Login](screenshots/login.png)
+![Login](Snaps/login.png)
 
 ### Home Dashboard
-![Home](screenshots/home.png)
-
-### Analytics Dashboard
-![Analytics](screenshots/analytics.png)
+![Home](Snaps/front.png)
 
 ## Project Structure
 
