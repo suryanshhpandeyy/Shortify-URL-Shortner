@@ -5,16 +5,15 @@ const URL = require('../model/url');
 async function handlePost(req,res) {
     try {
         const body = req.body;
-        if(!body.url) return res.status(400).json({error : 'URL is Required'});
+        if(!body.redirectURL)
+            return res.status(400).json({ error: "URL is Required" });
         const ShortURL = await URL.create({
-        RedirectURL: body.url,
+        RedirectURL: body.redirectURL,
         ShortID : nanoid(8),
         visitHistory : []
     }
 );
-        return res.status(201).json({
-            id: ShortURL,
-        });
+        return res.redirect(`/?short=${ShortURL.ShortID}`);
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
@@ -69,10 +68,12 @@ async function GetAnalytics(req, res) {
             });
         }
 
-        return res.json({
-            totalClicks: entry.visitHistory.length,
-            analytics: entry.visitHistory
-        });
+    return res.render("analytics", {
+    shortId: entry.ShortID,
+    redirectURL: entry.RedirectURL,
+    totalClicks: entry.visitHistory.length,
+    analytics: entry.visitHistory
+});
 
     } catch (err) {
         return res.status(500).json({

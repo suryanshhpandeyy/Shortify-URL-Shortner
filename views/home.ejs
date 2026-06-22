@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortify - URL Shortener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        body::before {
+            background: #3b82f6;
+            top: -100px;
+            left: -100px;
+        }
+
+        body::after {
+            background: #8b5cf6;
+            bottom: -100px;
+            right: -100px;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        .container {
+            width: min(800px, 100%);
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        /* Logo */
+        .logo {
+            width: 90px;
+            height: 90px;
+            margin: auto;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            font-size: 2.5rem;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, .4);
+        }
+
+        /* Heading */
+        h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        /* Card */
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .4);
+        }
+
+        /* Form */
+        form {
+            display: flex;
+            gap: 15px;
+        }
+
+        input {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, .15);
+            background: rgba(255, 255, 255, .08);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: .3s;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        input:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, .15);
+        }
+
+        button {
+            padding: 16px 28px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, .4);
+        }
+
+        /* Result */
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .result h3 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .result a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 25px;
+            color: #94a3b8;
+            font-size: .9rem;
+        }
+
+        /* Mobile */
+        @media(max-width:768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .card {
+                padding: 25px;
+            }
+        }
+
+        @media(max-width:480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .logo {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: .95rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo"> 🔗 </div>
+        <h1>Shortify</h1>
+        <p class="subtitle"> Transform long URLs into clean, shareable links instantly. Fast, secure and simple. </p>
+        <div class="card">
+            <form action="/url/shorten" method="POST"> <input type="url" name="redirectURL"
+                    placeholder="https://example.com" required> <button type="submit"> Shorten URL → </button> </form>
+            <% if (shortUrl) { %>
+                <div class="result">
+                   <a href="/url/<%= shortUrl %>" target="_blank">http://localhost:8001/url/<%= shortUrl %></a>
+                </div>
+                <% } %>
+        </div>
+        <div class="footer"> Built with Node.js • Express.js • MongoDB • EJS </div>
+    </div>
+</body>
+
+</html>
