@@ -1,6 +1,6 @@
 //Stateless Authentication
 const jwt = require('jsonwebtoken');
-const secret = 'Suryansh@1602'
+const secret = //Add Your Secret Key
 
 
 function setUser(user){
